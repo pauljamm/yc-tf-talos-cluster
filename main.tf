@@ -54,14 +54,14 @@ resource "yandex_compute_instance_group" "controlplane" {
   instance_template {
     platform_id = "standard-v2"
     resources {
-      memory = 4
-      cores  = 2
+      memory = var.controlplane.memory
+      cores  = var.controlplane.cores
     }
     boot_disk {
       mode = "READ_WRITE"
       initialize_params {
         image_id = data.yandex_compute_image.talos.id
-        size     = 20
+        size     = var.controlplane.disk_size
       }
     }
     network_interface {
@@ -77,16 +77,12 @@ resource "yandex_compute_instance_group" "controlplane" {
 
   scale_policy {
     fixed_scale {
-      size = 3
+      size = var.controlplane.count
     }
   }
 
   allocation_policy {
-    zones = [
-      "ru-central1-a",
-      "ru-central1-b",
-      "ru-central1-d"
-    ]
+    zones = var.controlplane.zones
   }
 
   deploy_policy {

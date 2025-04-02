@@ -23,3 +23,21 @@ variable "worker_groups" {
     }
   }
 }
+
+variable "controlplane" {
+  description = "Конфигурация control plane"
+  type = object({
+    count     = number
+    cores     = number
+    memory    = number
+    disk_size = number
+    zones     = list(string)
+  })
+  default = {
+    count     = 3
+    cores     = 2
+    memory    = 4
+    disk_size = 20
+    zones     = ["ru-central1-a", "ru-central1-b", "ru-central1-d"]
+  }
+}
