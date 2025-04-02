@@ -16,7 +16,7 @@ resource "yandex_compute_instance" "jump" {
 
   boot_disk {
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.id
+      image_id = data.yandex_compute_image.ubuntu[0].id
       size     = 20
     }
   }
