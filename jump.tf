@@ -25,6 +25,7 @@ resource "yandex_compute_instance" "jump" {
   }
   metadata = {
     enable-oslogin = true
+    user-data = file("${path.module}/scripts/install_tools.sh")
   }
 
   allow_stopping_for_update = "true"
