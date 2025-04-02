@@ -1,18 +1,20 @@
 resource "yandex_compute_instance_group" "workers" {
-  name                = "workers"
-  service_account_id  = yandex_iam_service_account.this.id
+  for_each = var.worker_groups
+
+  name               = "workers-${each.key}"
+  service_account_id = yandex_iam_service_account.this.id
 
   instance_template {
     platform_id = "standard-v2"
     resources {
-      memory = var.worker_memory
-      cores  = var.worker_cores
+      memory = each.value.memory
+      cores  = each.value.cores
     }
     boot_disk {
       mode = "READ_WRITE"
       initialize_params {
         image_id = data.yandex_compute_image.talos.id
-        size     = var.worker_disk_size
+        size     = each.value.disk_size
       }
     }
     network_interface {
@@ -29,16 +31,12 @@ resource "yandex_compute_instance_group" "workers" {
 
   scale_policy {
     fixed_scale {
-      size = var.worker_count
+      size = each.value.count
     }
   }
 
   allocation_policy {
-    zones = [
-      "ru-central1-a",
-      "ru-central1-b",
-      "ru-central1-d"
-    ]
+    zones = each.value.zones
   }
 
   deploy_policy {
