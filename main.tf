@@ -69,7 +69,8 @@ resource "yandex_compute_instance_group" "controlplane" {
       subnet_ids = [
         for s in module.network.private_subnets:
           s.subnet_id
-    ]
+      ]
+      security_group_ids = [yandex_vpc_security_group.k8s_security_group.id]
     }
     metadata = {
     }

@@ -24,6 +24,7 @@ resource "yandex_compute_instance" "jump" {
   network_interface {
     subnet_id = module.network.private_subnets["10.10.0.0/24"].subnet_id
     nat       = true
+    security_group_ids = [yandex_vpc_security_group.k8s_security_group.id]
   }
   
   metadata = {
