@@ -11,11 +11,3 @@ TALOS_VERSION=$(curl -s https://api.github.com/repos/siderolabs/talos/releases/l
 curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/$TALOS_VERSION/talosctl-linux-amd64
 chmod +x /usr/local/bin/talosctl
 echo 'source <(talosctl completion bash)' >> /etc/bash.bashrc
-
-# Создание директории для конфигурационных файлов
-mkdir -p /home/ubuntu/.kube
-chown -R ubuntu:ubuntu /home/ubuntu/.kube
-
-# Установка дополнительных полезных инструментов
-apt-get update
-apt-get install -y jq vim tmux
